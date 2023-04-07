@@ -3,7 +3,7 @@ project(first_project)
 
 
 
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs message_generation tf)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs nav_msgs message_generation tf)
 
 
 ## Generate messages in the 'msg' folder
