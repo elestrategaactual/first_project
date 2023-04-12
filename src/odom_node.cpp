@@ -19,7 +19,7 @@ std_msgs::Float64 m2;
 	double v_x;
 	double v_y;
 	double w_center;
-
+	double d= 2.8;
 	double x_b;
 	double y_b;
 	double th_b;
@@ -78,14 +78,13 @@ void callback1(const ros::TimerEvent& ev)
 	//for debug TRY TO READ THE BAG FILE
 }
 
-void publish(){
-	m1.data=speed_angle.x;
-	m2.data=speed_angle.y;
-	speed.publish(m1);
-	angle.publish(m2);
+void odometrycalc(){
+	w_center=speed_angle.x*cos(speed_angle.y*tan(speed_angle.y)/d);
+	v_y=w_center*d/2;
+	v_x=w_center*d/tan(speed_angle.y);
+	
+	//HERE PUT THE ODEMETRY CALCULATION
 }
-
-
 
 
 
