@@ -73,6 +73,10 @@ int main(int argc, char **argv){
 	ros::init(argc, argv, "odom_nodee");
 	ros::NodeHandle n;
 
+
+	n.getParam("/starting_x", x);
+	n.getParam("/starting_y", y);
+	n.getParam("/starting_th", th);
 	//ros::Publisher chatter_pub = n.advertise<custom_messages::custom_odometry>("chatter", 1000);//aqui se coloca el lugar donde esta el custom mesage en este caso custom_messages
 
 	ros::Rate loop_rate(10);
@@ -81,12 +85,16 @@ int main(int argc, char **argv){
   
   
   	while (ros::ok()){
-	    
-	    //	static int i=0;
-		//i=(i+1)%1000;
-		//custom_messages::Num msg;
-		//msg.num =i;
-		//chatter_pub.publish (msg);
+	    //
+
+		//
+		
+		//ODOMETRY CALCULATION CODE 
+
+		// END OF ODOMETRY CALCULATION
+
+		//
+
 
   	}
 

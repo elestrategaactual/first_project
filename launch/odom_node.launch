@@ -2,6 +2,13 @@
 <param name="/use_sim_time" value="true"/>
 
 
+<param name="starting_x" type="double" value="0" />
+<param name="starting_y" type="double" value="0" />
+<param name="starting_th" type="double" value="0" />
+
+
+
+
 <node pkg="first_project" type = "odom_node" name = "odom_node"/>
 
 
