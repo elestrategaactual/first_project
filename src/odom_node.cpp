@@ -3,8 +3,19 @@
 #include "std_msgs/Float64.h"
 #include "nav_msgs/Odometry.h"
 #include "first_project/custom_odometry.h"
+#include "first_project/reset_odom.h"
 
 #include <sstream>
+
+
+bool reset(first_project::reset_odom::Request  &req,
+           first_project::reset_odom::Response &res)
+{
+    // resetting the odometry ...
+  res.resetted = true;   // reset is done
+  return true;
+}
+
 
 class pub_sub
 {
@@ -94,6 +105,10 @@ void odometrycalc(){
 int main(int argc, char **argv){
 
 	ros::init(argc, argv, "odom_node");
+	
+	ros::NodeHandle n;
+    	ros::ServiceServer service = n.advertiseService("reset_odom", reset);
+	
 	pub_sub my_pub_sub;
 	ros::spin();
   	return 0;
