@@ -13,7 +13,16 @@ geometry_msgs::Quaternion speed_angle;
 
 std_msgs::Float64 m1;
 std_msgs::Float64 m2;
+    double x;
+	double y;
+	double th;
+	double v_x;
+	double v_y;
+	double w_center;
 
+	double x_b;
+	double y_b;
+	double th_b;
 private:
 ros::NodeHandle n; 
 
@@ -27,10 +36,14 @@ ros::Publisher angle; // for debug
 
 ros::Publisher speed; // for debug 
 
+
 ros::Timer timer1;
 	
 	
 public:
+
+	
+
   	pub_sub(){
  
     // debug area 
@@ -38,10 +51,14 @@ public:
 	speed= n.advertise<std_msgs::Float64>("speed", 1);
    //debug area
 
-  	sub = n.subscribe("speed_steer", 1, &pub_sub::callback, this);
-	pubodom = n.advertise<nav_msgs::Odometry>("odometry", 1);
-	pubcustom = n.advertise<first_project::custom_odometry>("custom_odometry", 1);
-	timer1 = n.createTimer(ros::Duration(1), &pub_sub::callback1, this);
+  	sub = n.subscribe("/speed_steer", 1, &pub_sub::callback, this);
+	pubodom = n.advertise<nav_msgs::Odometry>("/odometry", 1);
+	pubcustom = n.advertise<first_project::custom_odometry>("/custom_odometry", 1);
+	timer1 = n.createTimer(ros::Duration(0.1), &pub_sub::callback1, this);
+
+	n.getParam("/starting_x", x);
+	n.getParam("/starting_y", y);
+	n.getParam("/starting_th", th);
 	
 
 }
@@ -50,7 +67,7 @@ speed_angle=*msg;
 
 }
 
-void callback1(const ros::TimerEvent&)
+void callback1(const ros::TimerEvent& ev)
 {
 	//for debug TRY TO READ THE BAG FILE
 	m1.data=speed_angle.x;
@@ -61,6 +78,13 @@ void callback1(const ros::TimerEvent&)
 	//for debug TRY TO READ THE BAG FILE
 }
 
+void publish(){
+	m1.data=speed_angle.x;
+	m2.data=speed_angle.y;
+	speed.publish(m1);
+	angle.publish(m2);
+}
+
 
 
 
@@ -69,36 +93,9 @@ void callback1(const ros::TimerEvent&)
 
 
 int main(int argc, char **argv){
-    
-	ros::init(argc, argv, "odom_nodee");
-	ros::NodeHandle n;
-	double x;
-	double y;
-	double th;
 
-	n.getParam("/starting_x", x);
-	n.getParam("/starting_y", y);
-	n.getParam("/starting_th", th);
-	//ros::Publisher chatter_pub = n.advertise<custom_messages::custom_odometry>("chatter", 1000);//aqui se coloca el lugar donde esta el custom mesage en este caso custom_messages
-
-	ros::Rate loop_rate(10);
-
-	int count = 0;
-  
-  
-  	while (ros::ok()){
-	    //
-
-		//
-		
-		//ODOMETRY CALCULATION CODE 
-
-		// END OF ODOMETRY CALCULATION
-
-		//
-
-
-  	}
-
+	ros::init(argc, argv, "odom_node");
+	pub_sub my_pub_sub;
+	ros::spin();
   	return 0;
 }
