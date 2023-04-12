@@ -52,13 +52,13 @@ speed_angle=*msg;
 
 void callback1(const ros::TimerEvent&)
 {
-	//for debug
+	//for debug TRY TO READ THE BAG FILE
 	m1.data=speed_angle.x;
 	m2.data=speed_angle.y;
 	speed.publish(m1);
 	angle.publish(m2);
   	ROS_INFO("Callback 1 triggered");
-	//for debug
+	//for debug TRY TO READ THE BAG FILE
 }
 
 
@@ -72,7 +72,9 @@ int main(int argc, char **argv){
     
 	ros::init(argc, argv, "odom_nodee");
 	ros::NodeHandle n;
-
+	double x;
+	double y;
+	double th;
 
 	n.getParam("/starting_x", x);
 	n.getParam("/starting_y", y);
