@@ -41,6 +41,8 @@ ros::Subscriber sub;
 
 ros::Publisher pubodom;
 
+ros::ServiceServer service;
+
 ros::Publisher pubcustom; 
 
 ros::Publisher angle; // for debug 
@@ -62,14 +64,30 @@ public:
 	speed= n.advertise<std_msgs::Float64>("speed", 1);
    //debug area
 
+	// START DEFINITION ALL SERVICES
+   	service = n.advertiseService("reset_odom", reset);
+	// END DEFINITION ALL SERVICES
+
+
+	// START DEFINITION ALL SUBSCRIBE TOPICS
   	sub = n.subscribe("/speed_steer", 1, &pub_sub::callback, this);
+	// END DEFINITION ALL SUBSCRIBE TOPICS
+
+
+	// START DEFINITION ALL PUBLISH TOPICS
 	pubodom = n.advertise<nav_msgs::Odometry>("/odometry", 1);
 	pubcustom = n.advertise<first_project::custom_odometry>("/custom_odometry", 1);
-	timer1 = n.createTimer(ros::Duration(0.1), &pub_sub::callback1, this);
+	// END DEFINITION ALL PUBLISH TOPICS
 
+	// START DEFINITION ALL TIMERS
+	timer1 = n.createTimer(ros::Duration(0.1), &pub_sub::callback1, this);
+	// END DEFINITION ALL TIMERS
+
+	// START GET STATIC PARAMS
 	n.getParam("/starting_x", x);
 	n.getParam("/starting_y", y);
 	n.getParam("/starting_th", th);
+	// END GET STATIC PARAMS
 	
 
 }
@@ -105,10 +123,6 @@ void odometrycalc(){
 int main(int argc, char **argv){
 
 	ros::init(argc, argv, "odom_node");
-	
-	ros::NodeHandle n;
-    	ros::ServiceServer service = n.advertiseService("reset_odom", reset);
-	
 	pub_sub my_pub_sub;
 	ros::spin();
   	return 0;
