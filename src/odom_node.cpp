@@ -8,32 +8,30 @@
 #include <sstream>
 
 
-bool reset(first_project::reset_odom::Request  &req,
-           first_project::reset_odom::Response &res)
-{
-    // resetting the odometry ...
-  res.resetted = true;   // reset is done
-  return true;
-}
 
 
-class pub_sub
+
+class odometry
 {
 
 geometry_msgs::Quaternion speed_angle;
 
 std_msgs::Float64 m1;
 std_msgs::Float64 m2;
-    double x;
-	double y;
-	double th;
+
 	double v_x;
 	double v_y;
 	double w_center;
 	double d= 2.8;
+	
+	double x;
+	double y;
+	double th;
+
 	double x_b;
 	double y_b;
 	double th_b;
+
 private:
 ros::NodeHandle n; 
 
@@ -41,7 +39,7 @@ ros::Subscriber sub;
 
 ros::Publisher pubodom;
 
-ros::ServiceServer service;
+ros::ServiceServer reset_odom_service;
 
 ros::Publisher pubcustom; 
 
@@ -55,9 +53,10 @@ ros::Timer timer1;
 	
 public:
 
+
 	
 
-  	pub_sub(){
+  	odometry(){
  
     // debug area 
 	angle = n.advertise<std_msgs::Float64>("angle", 1);
@@ -65,12 +64,12 @@ public:
    //debug area
 
 	// START DEFINITION ALL SERVICES
-   	service = n.advertiseService("reset_odom", reset);
+   	reset_odom_service = n.advertiseService("reset_odom",&odometry::reset, this);
 	// END DEFINITION ALL SERVICES
 
 
 	// START DEFINITION ALL SUBSCRIBE TOPICS
-  	sub = n.subscribe("/speed_steer", 1, &pub_sub::callback, this);
+  	sub = n.subscribe("/speed_steer", 1, &odometry::callback, this);
 	// END DEFINITION ALL SUBSCRIBE TOPICS
 
 
@@ -80,7 +79,7 @@ public:
 	// END DEFINITION ALL PUBLISH TOPICS
 
 	// START DEFINITION ALL TIMERS
-	timer1 = n.createTimer(ros::Duration(0.1), &pub_sub::callback1, this);
+	timer1 = n.createTimer(ros::Duration(0.1), &odometry::callback1, this);
 	// END DEFINITION ALL TIMERS
 
 	// START GET STATIC PARAMS
@@ -107,7 +106,7 @@ void callback1(const ros::TimerEvent& ev)
 	//for debug TRY TO READ THE BAG FILE
 }
 
-void odometrycalc(){
+void odometry_calc(){
 	w_center=speed_angle.x*cos(speed_angle.y*tan(speed_angle.y)/d);
 	v_y=w_center*d/2;
 	v_x=w_center*d/tan(speed_angle.y);
@@ -115,15 +114,29 @@ void odometrycalc(){
 	//HERE PUT THE ODEMETRY CALCULATION
 }
 
+bool reset(first_project::reset_odom::Request  &req,
+           first_project::reset_odom::Response &res)
+{
+    // resetting the odometry ...
+	x=0;
+	y=0;
+	th=0;
+	x_b=0;
+	y_b=0;
+	th_b=0;	
+  res.resetted = true;   // reset is done
+  return true;
+}
 
 
 };
 
 
+
 int main(int argc, char **argv){
 
 	ros::init(argc, argv, "odom_node");
-	pub_sub my_pub_sub;
+	odometry node_core;
 	ros::spin();
   	return 0;
 }
