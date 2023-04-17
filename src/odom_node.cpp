@@ -4,6 +4,7 @@
 #include "nav_msgs/Odometry.h"
 #include "first_project/custom_odometry.h"
 #include "first_project/reset_odom.h"
+#include <tf/transform_broadcaster.h>
 
 #include <sstream>
 
@@ -81,6 +82,9 @@ public:
 	// START DEFINITION ALL TIMERS
 	timer1 = n.createTimer(ros::Duration(0.1), &odometry::callback1, this);
 	// END DEFINITION ALL TIMERS
+		
+	// tf
+	tf::TransformBroadcaster br;
 
 	// START GET STATIC PARAMS
 	n.getParam("/starting_x", x);
@@ -102,6 +106,14 @@ void callback1(const ros::TimerEvent& ev)
 	m2.data=speed_angle.y;
 	speed.publish(m1);
 	angle.publish(m2);
+	
+	tf::Transform transform;
+    	transform.setOrigin( tf::Vector3(x_b, y_b, 0) );
+    	tf::Quaternion q;
+    	q.setRPY(0, 0, th_b);
+    	transform.setRotation(q);
+    	br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "vehicle_centre"));
+	
   	ROS_INFO("Callback 1 triggered");
 	//for debug TRY TO READ THE BAG FILE
 }
