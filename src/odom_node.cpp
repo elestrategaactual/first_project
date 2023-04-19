@@ -93,6 +93,8 @@ void callback1()    //const ros::TimerEvent&
 {
     //PUBLISHING
     // odmetry
+    odom.pose.pose.position.x = x_b;
+    odom.pose.pose.position.y = y_b;
     odom.pose.pose.orientation.x = x_b ;
     odom.pose.pose.orientation.y = y_b ;
     odom.pose.pose.orientation.w = th_b ;
