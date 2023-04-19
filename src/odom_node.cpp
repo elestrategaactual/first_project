@@ -122,6 +122,7 @@ void callback1(const ros::TimerEvent& ev)
 	//for debug TRY TO READ THE BAG FILE
 }
 
+// START OF KINEMATIC EQUATIONS
 
 double dx(float x1, float y1, float th1){
 	return(speed_angle.x*cos(th1)); // speed of the back wheel
@@ -134,6 +135,10 @@ double dy(float x1, float y1, float th1){
 double dth( float x1, float y1, float th1){
 	return	(speed_angle.x*tan(speed_angle.y)/d ); // speed of the back wheel
 }
+
+// END OF KINEMATICS EQUATIONS
+
+
 void rngkutta(float h){
 	float k1=h* dx(x,y,th);
 	float l1=h* dy(x,y,th);
