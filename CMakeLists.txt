@@ -38,7 +38,7 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(odom_node src/odom_node.cpp)
 add_dependencies(odom_node ${odom_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(odom_node custom_messages_generate_messages_cpp)
+add_dependencies(odom_node first_project_generate_messages_cpp)
 target_link_libraries(odom_node ${catkin_LIBRARIES})
 
 

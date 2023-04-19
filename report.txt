@@ -6,4 +6,7 @@ Hernandez_Triana, Ivan_Mauricio, id:10947421
 Gabrielli, Simone, id:10715031
 
 Code test:
-1.Package compile error
+1.Package succesfully compiled
+2.Publisher started succesfully
+3.Bag started succesfully
+4.Publisher is publishing data
