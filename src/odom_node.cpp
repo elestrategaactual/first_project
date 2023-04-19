@@ -19,7 +19,7 @@ geometry_msgs::Quaternion speed_angle;
 
 std_msgs::Float64 m1;
 std_msgs::Float64 m2;
-	std::string t_str ;
+std::string t_str ;
 
 	double v_x;
 	double v_y;
@@ -35,7 +35,7 @@ std_msgs::Float64 m2;
 	double th_b;
 
 	double dt =0.1; 
-	
+
 	double time;
 
 
@@ -127,16 +127,21 @@ void callback1(const ros::TimerEvent& ev)
 
 // START OF KINEMATIC EQUATIONS
 
+double dth(float x1, float y1, float th1){
+	//return	(speed_angle.x*tan(speed_angle.y)/d ); // speed of the back wheel
+	
+	return(2*speed_angle.x*sin(speed_angle.y)/(d*(1+cos(speed_angle.y))));
+}
+
 double dx(float x1, float y1, float th1){
-	return(speed_angle.x*cos(th1)); // speed of the back wheel
+	
+	//return(speed_angle.x*cos(th1)); // speed of the back wheel
+	return((2*speed_angle.x*cos(speed_angle.y)/(1+cos(speed_angle.y)))*cos(th1)+(speed_angle.x*sin(speed_angle.y)/(1+cos(speed_angle.y)))*sin(th1))
 }
 
-double dy(float x1, float y1, float th1){
-	return (speed_angle.x*sin(th1)); // speed of the back wheel
-}
-
-double dth( float x1, float y1, float th1){
-	return	(speed_angle.x*tan(speed_angle.y)/d ); // speed of the back wheel
+double dy( float x1, float y1, float th1){
+	//return (speed_angle.x*sin(th1)); // speed of the back wheel
+	return((2*speed_angle.x*cos(speed_angle.y)/(1+cos(speed_angle.y)))*sin(th1)+(speed_angle.x*sin(speed_angle.y)/(1+cos(speed_angle.y)))*cos(th1))
 }
 
 // END OF KINEMATICS EQUATIONS
