@@ -19,6 +19,7 @@ geometry_msgs::Quaternion speed_angle;
 
 std_msgs::Float64 m1;
 std_msgs::Float64 m2;
+	std::string t_str ;
 
 	double v_x;
 	double v_y;
@@ -34,6 +35,8 @@ std_msgs::Float64 m2;
 	double th_b;
 
 	double dt =0.1; 
+	
+	double time;
 
 
 private:
@@ -172,6 +175,8 @@ void odometry_calc(){
 	
 	//HERE PUT THE ODEMETRY CALCULATION
 	rngkutta(dt);
+	time = ros::Time::now().toSec();    // time type to double
+    	t_str = std::to_string(time) ;      //double to string
 }
 
 bool reset(first_project::reset_odom::Request  &req,
