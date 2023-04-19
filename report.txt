@@ -1,0 +1,9 @@
+Automatically generated report
+
+Group members:
+Liagon, Jehu_Mark, id:10629371
+Hernandez_Triana, Ivan_Mauricio, id:10947421
+Gabrielli, Simone, id:10715031
+
+Code test:
+1.Package compile error

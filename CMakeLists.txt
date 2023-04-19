@@ -9,7 +9,7 @@ find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs nav_msgs message_g
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   custom_odometry.msg
+   Odom.msg
  )
 
 
@@ -27,6 +27,7 @@ find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs nav_msgs message_g
 generate_messages(
   DEPENDENCIES
   std_msgs
+  first_project
 )
 
 catkin_package(CATKIN_DEPENDS message_runtime std_msgs) 
@@ -36,6 +37,7 @@ catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(odom_node src/odom_node.cpp)
+add_dependencies(odom_node ${odom_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(odom_node custom_messages_generate_messages_cpp)
 target_link_libraries(odom_node ${catkin_LIBRARIES})
 
