@@ -161,7 +161,7 @@ double dth(double x1, double y1, double th1){
 double dx(double x1, double y1, double th1){
 	
 	//return(speed_angle.x*cos(th1)); // speed of the back wheel
-	return((2*speed_angle.x*cos(speed_angle.y)/(1+cos(speed_angle.y)))*cos(th1)+(speed_angle.x*sin(speed_angle.y)/(1+cos(speed_angle.y)))*sin(th1));
+	return((2*speed_angle.x*cos(speed_angle.y)/(1+cos(speed_angle.y)))*cos(th1)-(speed_angle.x*sin(speed_angle.y)/(1+cos(speed_angle.y)))*sin(th1));
 }
 
 double dy( double x1, double y1, double th1){
