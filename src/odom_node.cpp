@@ -2,6 +2,7 @@
 #include "nav_msgs/Odometry.h"
 #include "first_project/Odom.h"
 #include <tf/transform_broadcaster.h>
+#include <nav_msgs/Odometry.h>
 
 #include "first_project/reset_odom.h"
 
@@ -13,6 +14,8 @@
 double x_b ;
 double y_b ;
 double th_b ;
+
+bool flag=true;
 
 bool reset(first_project::reset_odom::Request  &req,
            first_project::reset_odom::Response &res)
@@ -45,6 +48,8 @@ double Ts ;     // 0.2
 //double w;
 double d = 2.8 ;
 double time;
+ros::Time current_time;
+ros::Time last_time;
 
 
 
@@ -72,13 +77,17 @@ pub_sub(){
     n.getParam("/starting_x", x_b);
     n.getParam("/starting_y", y_b);
     n.getParam("/starting_th", th_b);  
-     
+    last_time=ros::Time::now();
 }
 
 
 
 void callback(const geometry_msgs::Quaternion::ConstPtr& msg){
     speed_angle =* msg ;
+    if(flag){
+        last_time=ros::Time::now();
+        flag=false;
+    }
     odometrycalc();
 
     // I publish immediatly after a new message from speed_steer
@@ -90,11 +99,24 @@ void callback1()    //const ros::TimerEvent&
 {
     //PUBLISHING
     // odmetry
+    //since all odometry is 6DOF we'll need a quaternion created from yaw
+        geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th_b);
+        //first, we'll publish the transform over tf
+        geometry_msgs::TransformStamped odom_trans;
+        odom_trans.header.stamp = current_time;
+        odom_trans.header.frame_id = "odom";
+        odom_trans.child_frame_id = "base_link";
+        odom_trans.transform.translation.x = x_b;
+        odom_trans.transform.translation.y = y_b;
+        odom_trans.transform.translation.z = 0.0;
+        odom_trans.transform.rotation = odom_quat;
+
+
+
+
     odom.pose.pose.position.x = x_b;
     odom.pose.pose.position.y = y_b;
-    odom.pose.pose.orientation.x = x_b ;
-    odom.pose.pose.orientation.y = y_b ;
-    odom.pose.pose.orientation.w = th_b ;
+    odom.pose.pose.orientation= odom_quat;
     odom_node.publish(odom);
     // custum_odometry
     odom_cust_msg.x = x_b ;
@@ -109,17 +131,17 @@ void callback1()    //const ros::TimerEvent&
     q.setRPY(0, 0, th_b);
     transform.setRotation(q);
     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "vehicle_centre"));
-
     
+    last_time = current_time;
     //ROS_INFO("Ts=%f",Ts);
 }
 
 void odometrycalc(){
-    
-    
+    current_time = ros::Time::now();
+    time=current_time.toSec
     // Ts = 1/50 more or less from rosbag hz of the publication rate
-    Ts = ros::Time::now().toSec() - time ;
-
+    Ts = (current_time - last_time).toSec();;
+    
     // EULERO INTEGRATION
     /*
     if(speed_angle.y != 0){
@@ -142,7 +164,7 @@ void odometrycalc(){
     // EULERO INTEGRATION
 
     rngkutta(Ts);   
-    time = ros::Time::now().toSec();    // time type to double
+     // time type to double
     t_str = std::to_string(time) ;      //double to string
 
     }
