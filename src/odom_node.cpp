@@ -85,6 +85,7 @@ pub_sub(){
 void callback(const geometry_msgs::Quaternion::ConstPtr& msg){
     speed_angle =* msg ;
     if(flag){
+        
         last_time=ros::Time::now();
         flag=false;
     }
@@ -138,7 +139,7 @@ void callback1()    //const ros::TimerEvent&
 
 void odometrycalc(){
     current_time = ros::Time::now();
-    time=current_time.toSec
+    time=current_time.toSec();
     // Ts = 1/50 more or less from rosbag hz of the publication rate
     Ts = (current_time - last_time).toSec();;
     
