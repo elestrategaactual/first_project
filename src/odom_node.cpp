@@ -38,15 +38,12 @@ std::string t_str ;
 
 double Ts ;     // 0.2
 
-double v_x;     //robot frame
-double v_y;
-double vx_b;    //base frame
-double vy_b;
-double w;
+//double v_x;     //robot frame
+//double v_y;
+//double vx_b;    //base frame
+//double vy_b;
+//double w;
 double d = 2.8 ;
-
-double dt =0.1;
-
 double time;
 
 
@@ -114,7 +111,7 @@ void callback1()    //const ros::TimerEvent&
     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "vehicle_centre"));
 
     
-    ROS_INFO("Ts=%f",Ts);
+    //ROS_INFO("Ts=%f",Ts);
 }
 
 void odometrycalc(){
@@ -144,7 +141,7 @@ void odometrycalc(){
     */
     // EULERO INTEGRATION
 
-    rngkutta(dt);   
+    rngkutta(Ts);   
     time = ros::Time::now().toSec();    // time type to double
     t_str = std::to_string(time) ;      //double to string
 
@@ -191,9 +188,9 @@ void rngkutta(double h){
 	th_b=th_b+(1.0/6)*(m1+2.0*m2+2.0*m3+m4);
 
 
-    ROS_INFO("x_b=%f",x_b);
-    ROS_INFO("y_b=%f",y_b);
-    ROS_INFO("th_b=%f",th_b);
+ //   ROS_INFO("x_b=%f",x_b);
+  //  ROS_INFO("y_b=%f",y_b);
+   // ROS_INFO("th_b=%f",th_b);
 }
     
     //RUNGE-KUTTA
