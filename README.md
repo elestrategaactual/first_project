@@ -1,7 +1,7 @@
 # first_project
  first_project Robotics
  
-|               Nombre               |GitHub nickname| 
+|               Name               |GitHub nickname| 
 |------------------------------------|---------------| 
 | Simone Gabrielli |[Simogabrielli](https://github.com/Simogabrielli)| 
 | Jehu Mark Liagon |[mmarrkk](https://github.com/mmarrkk)| 
